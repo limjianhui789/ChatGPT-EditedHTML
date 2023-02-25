@@ -1,184 +1,92 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>发送POST请求</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .form-control {
-      border-color: #007bff;
-    }
-    .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-    }
-    .btn-primary:hover {
-      background-color: #0069d9;
-      border-color: #0062cc;
-    }
-		.container {
-			max-width: 500px;
-			margin: 0 auto;
-			padding: 20px;
-			background-color: #fff;
-			border-radius: 8px;
-			box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-		}
-		.text-primary {
-			color: #007bff !important;
-		}
-		.mt-4 {
-			margin-top: 1.5rem !important;
-		}
-		.font-bold {
-			font-weight: 700;
-		}
-	</style>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title">Menu</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link text-primary" href="#" onclick="displayGetUserInfoForm()">Get User Info</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav>
-	<div class="container mt-4">
-		<h1 class="text-center mb-4">注册用户</h1>
-		<form id="post-form" method="POST">
-			<div class="mb-3">
-				<label for="username" class="form-label">用户名：</label>
-				<input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" required>
-			</div>
-			<div class="mb-3">
-				<label for="days" class="form-label">天数：</label>
-				<input type="number" class="form-control" id="days" name="days" placeholder="请输入天数" required>
-			</div>
-			<button type="submit" class="btn btn-primary mt-4 w-100">提交</button>
-		</form>
-		<div class="result mt-4" style="display: none;">
-			<p class="text-primary font-bold mb-3">注册成功</p>
-			<div class="d-flex flex-column">
-				<div><span class="font-bold">过期日期：</span><span id="expired-date"></span></div>
-				<div><span class="font-bold">UUID：</span><span id="uuid"></span></div>
-			</div>
-		</div>
-		<div class="error mt-4" style="display: none;">
-			<p class="text-primary font-bold mb-3">注册失败</p>
-			<p id="error-message"></p>
-		</div>
-	</div>
-
-  <!-- Get User Info Form -->
-  <div class="modal" id="getUserInfoModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Get User Info</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="getUserInfoForm">
-            <div class="mb-3">
-              <label for="getUsername" class="form-label">Username:</label>
-              <input type="text" class="form-control" id="getUsername" name="username">
+  <head>
+    <title>Register User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Register User</h5>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+            <div class="card-body">
+              <form id="register-form">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="username" placeholder="Username">
+                  <label for="username">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="validity" placeholder="Validity">
+                  <label for="validity">Validity</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- User Info Modal -->
-  <div class="modal" id="userInfoModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="userInfoModalTitle"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <div class="modal fade" id="message-modal" tabindex="-1" aria-labelledby="message-modal-label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="message-modal-label">Message</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="message-text"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          </div>
         </div>
-        <div class="modal-body" id="userInfoModalBody"></div>
       </div>
     </div>
-  </div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    function displayGetUserInfoForm() {
-      $('#getUserInfoModal').modal('show');
-    }
 
-    $('#getUserInfoForm').submit(function(event) {
-      event.preventDefault();
-      var username = $('#getUsername').val();
-      $.ajax({
-        url: 'http://127.0.0.1:5000/getUserInfoByUsername',
-        method: 'POST',
-        data: JSON.stringify({'username': username}),
-        contentType: 'application/json',
-        success: function(data) {
-          if (data['status'] === 0) {
-            var userInfo = "Created Date: " + data['created_date'] + '<br>' +
-              "Expired Date: " + data['expired_date'] + '<br>' +
-              "Username: " +data['username'] + '<br>' +
-              "UUID: " + data['uuid'];
-            $('#getUserInfoModal').modal('hide');
-            $('#userInfoModalTitle').html('User Info');
-            $('#userInfoModalBody').html(userInfo);
-            $('#userInfoModal').modal('show');
-          } else {
-            $('#getUserInfoModal').modal('hide');
-            alert(data['message']);
-          }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          $('#getUserInfoModal').modal('hide');
-          alert('Error: ' + errorThrown);
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function() {
+        $('#register-form').submit(function(event) {
+          event.preventDefault();
+          var username = $('#username').val();
+          var validity = $('#validity').val();
+          $.ajax({
+            type: 'POST',
+            url: '/registerUser',
+            contentType: 'application/json',
+            data: JSON.stringify({'username': username}),
+            success: function(response) {
+              if (response['status'] == 0) {
+                $.ajax({
+                  type: 'POST',
+                  url: '/addValidityByUsername',
+                  contentType: 'application/json',
+                  data: JSON.stringify({'username': username, 'validity': validity}),
+                  success: function(response) {
+                    $('#message-text').text(response['message']);
+                    $('#message-modal').modal('show');
+                  },
+                  error: function(xhr, status, error) {
+                    $('#message-text').text('Error: ' + error);
+                    $('#message-modal').modal('show');
+                  }
+                });
+              } else {
+                $('#message-text').text(response['message']);
+                $('#message-modal').modal('show');
+              }
+            }
+          })
+        })
       });
-    });
-  </script>
-	<script>
-		$(document).ready(function() {
-			$('#post-form').submit(function(event) {
-				event.preventDefault();
-				axios.post('/register', {
-					username: $('#username').val(),
-            days: parseInt($('#days').val())
-          })
-          .then(function(response) {
-            $('.result').show();
-            $('#expired-date').text(response.data.expired_date);
-            $('#uuid').text(response.data.uuid);
-          })
-          .catch(function(error) {
-            $('.error').show();
-            $('#error-message').text(error.response.data.message);
-          })
-      });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
